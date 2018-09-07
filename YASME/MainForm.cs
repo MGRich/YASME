@@ -40,39 +40,46 @@ namespace Test
             {
                 nw = true;
             }
-            CommonOpenFileDialog dlg = new CommonOpenFileDialog
-            {
-                IsFolderPicker = true
-            };
-            dlg.Title = "Sonic Mania Data Folder";
             bool fl = true;
-            while (fl)
+            try
             {
-                if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
+                data = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sonic Mania\\Data";
+            }
+            catch
+            {
+                CommonOpenFileDialog dlg = new CommonOpenFileDialog
                 {
-                    data = dlg.FileName;
-                    Console.WriteLine(data);
-                    //load GC
-                    try
+                    IsFolderPicker = true
+                };
+                dlg.Title = "Sonic Mania Data Folder";
+                while (fl)
+                {
+                    if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
                     {
-                        gc = new RSDKv5.GameConfig(data + "\\Game\\GameConfig.bin");
-                        gcf = data + "\\Game\\GameConfig.bin";
-                        openGC(gc);
-                        status.Text = "Loaded GameConfig.";
-                        fl = false;
+                        data = dlg.FileName;
+                        Console.WriteLine(data);
                     }
-                    catch
+                    else
                     {
-                        MessageBox.Show("Please select a valid Sonic Mania Data folder.", "Invalid Selection");
+                        if (!nw)
+                        {
+                            fl = false;
+                        }
                     }
                 }
-                else
-                {
-                    if (!nw)
-                    {
-                        fl = false;
-                    }
-                }
+            }
+            //load GC
+            try
+            {
+                gc = new RSDKv5.GameConfig(data + "\\Game\\GameConfig.bin");
+                gcf = data + "\\Game\\GameConfig.bin";
+                openGC(gc);
+                statusLabel.Text = "Loaded GameConfig.";
+                fl = false;
+            }
+            catch
+            {
+                MessageBox.Show("Please select a valid Sonic Mania Data folder.", "Invalid Selection");
             }
         }
 
@@ -564,7 +571,7 @@ namespace Test
             gc.GameName = gameName.Text;
             gc.GameSubname = gameSubname.Text;
             gc.Write(gcf, false);
-            status.Text = "Saved GameConfig.";
+            statusLabel.Text = "Saved GameConfig.";
         }
 
         private void saveAs(object sender, EventArgs e) //saveas
@@ -576,7 +583,7 @@ namespace Test
                 gc.GameSubname = gameSubname.Text;
                 string pth = dlg.SelectedPath + "\\GameConfig.bin";
                 gc.Write(pth, false);
-                status.Text = "Saved GameConfig to " + pth + ".";
+                statusLabel.Text = "Saved GameConfig to " + pth + ".";
             }
         }
 
@@ -593,6 +600,10 @@ namespace Test
                 Directory.CreateDirectory(data + "\\SoundFX\\" + wcatAdd.Text);
                 string h = wcatAdd.Text;
                 adn = wavTree.Nodes.Add(h);
+                if (adn == null)
+                {
+                    MessageBox.Show("There was a naming error in your category. Try naming it something else.");
+                }
             }
             impWav(sender, e);
             //wcatAdd.Text = "[added!]";

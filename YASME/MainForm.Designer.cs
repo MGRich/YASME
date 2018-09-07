@@ -34,7 +34,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.status = new System.Windows.Forms.Label();
             this.tabs = new System.Windows.Forms.TabControl();
             this.gamecTab = new System.Windows.Forms.TabPage();
             this.stageCategories = new System.Windows.Forms.TreeView();
@@ -55,12 +54,15 @@
             this.saveMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsMenue = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1.SuspendLayout();
             this.tabs.SuspendLayout();
             this.gamecTab.SuspendLayout();
             this.wavBox.SuspendLayout();
             this.sceneBox.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // gameName
@@ -112,16 +114,6 @@
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "General Names";
-            // 
-            // status
-            // 
-            this.status.AutoSize = true;
-            this.status.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.status.Location = new System.Drawing.Point(7, 629);
-            this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(223, 15);
-            this.status.TabIndex = 9;
-            this.status.Text = "And in the beginning, there was silence.";
             // 
             // tabs
             // 
@@ -309,15 +301,35 @@
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusLabel});
+            this.statusStrip.Location = new System.Drawing.Point(0, 624);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(1030, 22);
+            this.statusStrip.SizingGrip = false;
+            this.statusStrip.TabIndex = 11;
+            this.statusStrip.Text = "statusStrip";
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.ActiveLinkColor = System.Drawing.Color.Black;
+            this.statusLabel.LinkColor = System.Drawing.Color.Black;
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(0, 17);
+            this.statusLabel.VisitedLinkColor = System.Drawing.Color.Black;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(1030, 653);
+            this.ClientSize = new System.Drawing.Size(1030, 646);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.tabs);
-            this.Controls.Add(this.status);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -334,6 +346,8 @@
             this.sceneBox.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -345,7 +359,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label status;
         private System.Windows.Forms.TabControl tabs;
         private System.Windows.Forms.TabPage gamecTab;
         private System.Windows.Forms.TabPage scab;
@@ -366,6 +379,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox scatAdd;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
     }
 }
 
