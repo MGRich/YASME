@@ -177,7 +177,7 @@
             this.awCategory.TabIndex = 2;
             this.awCategory.Text = "Add WAV Category";
             this.awCategory.UseVisualStyleBackColor = true;
-            this.awCategory.Click += new System.EventHandler(this.awCat);
+            this.awCategory.Click += new System.EventHandler(this.aCat);
             // 
             // addWAV
             // 
@@ -225,6 +225,7 @@
             this.button2.TabIndex = 12;
             this.button2.Text = "Import Scene";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.impScn);
             // 
             // button1
             // 
@@ -234,6 +235,7 @@
             this.button1.TabIndex = 12;
             this.button1.Text = "Add Scene Category";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.aCat);
             // 
             // scatAdd
             // 

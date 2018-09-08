@@ -11,6 +11,12 @@ namespace RSDKv5
         public string Name;
         public byte MaxConcurrentPlay;
 
+        public WAVConfiguration()
+        {
+            Name = "";
+            MaxConcurrentPlay = 0;
+        }
+
         internal WAVConfiguration(Reader reader)
         {
             Name = reader.ReadRSDKString();

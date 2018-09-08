@@ -13,7 +13,7 @@ namespace RSDKv5
         public String GameSubname;
         public String Version;
 
-        bool _scenesHaveModeFilter;
+        private bool _scenesHaveModeFilter;
 
         public byte StartSceneCategoryIndex;
         public ushort StartSceneIndex;
@@ -27,6 +27,10 @@ namespace RSDKv5
 
             public SceneInfo()
             {
+                Name = "New Scene";
+                Zone = "GHZ";
+                SceneID = "1";
+                ModeFilter = 3;
             }
 
             internal SceneInfo(Reader reader, bool scenesHaveModeFilter)
@@ -53,7 +57,7 @@ namespace RSDKv5
             public string Name;
             public List<SceneInfo> Scenes = new List<SceneInfo>();
 
-            internal Category()
+            public Category()
             {
                 Name = "New Category";
                 Scenes.Add(new SceneInfo());
@@ -107,12 +111,10 @@ namespace RSDKv5
 
         public GameConfig(string filename) : this(new Reader(filename), true)
         {
-
         }
 
         public GameConfig(Stream stream) : this(new Reader(stream), false)
         {
-
         }
 
         private GameConfig(Reader reader, bool closeStream = false)
@@ -157,7 +159,7 @@ namespace RSDKv5
         public void Write(string filename, bool closeStream)
         {
             using (Writer writer = new Writer(filename))
-                this.Write(writer,closeStream);
+                this.Write(writer, closeStream);
         }
 
         public void Write(Stream stream, bool closeStream)
@@ -190,7 +192,7 @@ namespace RSDKv5
                 c.Write(writer);
 
             if (CloseStream)
-            writer.Close();
+                writer.Close();
         }
     }
 }

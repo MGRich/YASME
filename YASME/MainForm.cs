@@ -43,7 +43,14 @@ namespace Test
             bool fl = true;
             try
             {
-                data = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sonic Mania\\Data";
+                if (nw)
+                {
+                    data = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sonic Mania\\Data";
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
             catch
             {
@@ -51,19 +58,22 @@ namespace Test
                 {
                     IsFolderPicker = true
                 };
+                dlg.DefaultDirectory = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sonic Mania\\";
                 dlg.Title = "Sonic Mania Data Folder";
                 while (fl)
                 {
-                    if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
+                    CommonFileDialogResult result = dlg.ShowDialog();
+                    if (result == CommonFileDialogResult.Ok)
                     {
                         data = dlg.FileName;
                         Console.WriteLine(data);
+                        fl = false;
                     }
                     else
                     {
                         if (!nw)
                         {
-                            fl = false;
+                            return;
                         }
                     }
                 }
@@ -134,6 +144,8 @@ namespace Test
             {
                 foreach (RSDKv5.GameConfig.SceneInfo y in x.Scenes)
                 {
+                    Console.WriteLine(y.SceneID + " EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + y.Name + " " + y.Zone + " ");
+                    Console.WriteLine(y.ModeFilter);
                     e++;
                 }
             }
@@ -496,6 +508,7 @@ namespace Test
         {
             List<string> knds = new List<string>();
             Dictionary<string, int> nds = new Dictionary<string, int> { };
+            view.Nodes.Clear();
             int e = 0;
             int i = 0;
             foreach (string[] x in lst)
@@ -547,7 +560,7 @@ namespace Test
             }
         }
 
-        private void nodeSelect(object sender, EventArgs e)
+        /*private void nodeSelect(object sender, EventArgs e)
         {
             TreeView tr = sender as TreeView;
             TreeNode tn = tr.SelectedNode;
@@ -564,7 +577,7 @@ namespace Test
                 RSDKv5.GameConfig.SceneInfo sn = scn[nm];
                 ct = stn[sn];
             }
-        }
+        }*/
 
         private void save(object sender, EventArgs e) //savenorm
         {
@@ -588,25 +601,57 @@ namespace Test
         }
 
         private TreeNode adn = null;
+        private RSDKv5.GameConfig.Category gcct = new RSDKv5.GameConfig.Category();
 
-        private void awCat(object sender, EventArgs e)
+        private void aCat(object sender, EventArgs e)
         {
-            if (wcatAdd.Text == "[added!]" || wcatAdd.Text == "[category name]")
+            Button btn = sender as Button;
+            if (btn.Text == "Add WAV Category")
             {
-                return;
-            }
-            if (!Directory.Exists(data + "\\SoundFX\\" + wcatAdd.Text))
-            {
-                Directory.CreateDirectory(data + "\\SoundFX\\" + wcatAdd.Text);
+                if (wcatAdd.Text == "[added!]" || wcatAdd.Text == "[category name]")
+                {
+                    return;
+                }
+                if (!Directory.Exists(data + "\\SoundFX\\" + wcatAdd.Text))
+                {
+                    Directory.CreateDirectory(data + "\\SoundFX\\" + wcatAdd.Text);
+                }
                 string h = wcatAdd.Text;
                 adn = wavTree.Nodes.Add(h);
+                gcct = new RSDKv5.GameConfig.Category
+                {
+                    Name = h
+                };
+                gc.Categories.Add(gcct);
                 if (adn == null)
                 {
                     MessageBox.Show("There was a naming error in your category. Try naming it something else.");
                 }
+                impWav(sender, e);
             }
-            impWav(sender, e);
-            //wcatAdd.Text = "[added!]";
+            else
+            {
+                if (scatAdd.Text == "[added!]" || scatAdd.Text == "[category name]")
+                {
+                    return;
+                }
+                if (!Directory.Exists(data + "\\Scenes\\" + wcatAdd.Text))
+                {
+                    Directory.CreateDirectory(data + "\\SoundFX\\" + wcatAdd.Text);
+                }
+                string h = scatAdd.Text;
+                adn = stageCategories.Nodes.Add(h);
+                if (adn == null)
+                {
+                    MessageBox.Show("There was a naming error in your category. Try naming it something else.");
+                }
+                impScene(sender, e);
+            }
+        }
+
+        private void impScene(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
         }
 
         private void impWav(object sender, EventArgs e)
@@ -656,6 +701,11 @@ namespace Test
                 string fln = Path.GetFileName(dlg.FileName);
                 File.Copy(dlg.FileName, data + "\\SoundFX\\" + cat + "\\" + fln, true);
                 node.Nodes.Add(fln);
+                RSDKv5.WAVConfiguration z = new RSDKv5.WAVConfiguration
+                {
+                    Name = cat + "/" + fln
+                };
+                gc.WAVs.Add(z);
                 /*if (nds == null)
                 {
                     MessageBox.Show(cat);
@@ -679,8 +729,14 @@ namespace Test
                 {
                     Text = "Add WAV Category" //enough to trick it
                 };
-                awCat(btn, e);
+                aCat(btn, e);
             }
+        }
+
+        private void impScn(object sender, EventArgs e)
+        {
+            MakeScene scnm = new MakeScene(new RSDKv5.GameConfig.SceneInfo(), data);
+            scnm.Show();
         }
     }
 }
