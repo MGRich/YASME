@@ -35,9 +35,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.sceneID = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.fullPath = new System.Windows.Forms.TextBox();
             this.modeFilters = new System.Windows.Forms.CheckedListBox();
+            this.fullPath = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.catBox = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -102,18 +104,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Mode Filters";
             // 
-            // fullPath
-            // 
-            this.fullPath.BackColor = System.Drawing.SystemColors.Window;
-            this.fullPath.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.fullPath.Cursor = System.Windows.Forms.Cursors.Default;
-            this.fullPath.Location = new System.Drawing.Point(16, 142);
-            this.fullPath.Name = "fullPath";
-            this.fullPath.ReadOnly = true;
-            this.fullPath.Size = new System.Drawing.Size(276, 13);
-            this.fullPath.TabIndex = 7;
-            this.fullPath.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // modeFilters
             // 
             this.modeFilters.BackColor = System.Drawing.SystemColors.Window;
@@ -128,21 +118,57 @@
             this.modeFilters.Size = new System.Drawing.Size(86, 45);
             this.modeFilters.TabIndex = 0;
             // 
+            // fullPath
+            // 
+            this.fullPath.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.fullPath.BackColor = System.Drawing.SystemColors.Window;
+            this.fullPath.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.fullPath.Cursor = System.Windows.Forms.Cursors.Default;
+            this.fullPath.Location = new System.Drawing.Point(28, 138);
+            this.fullPath.Name = "fullPath";
+            this.fullPath.ReadOnly = true;
+            this.fullPath.Size = new System.Drawing.Size(276, 13);
+            this.fullPath.TabIndex = 7;
+            this.fullPath.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(193, 109);
+            this.button1.Location = new System.Drawing.Point(192, 110);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(101, 23);
             this.button1.TabIndex = 8;
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.save);
+            // 
+            // catBox
+            // 
+            this.catBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.catBox.FormattingEnabled = true;
+            this.catBox.Location = new System.Drawing.Point(193, 86);
+            this.catBox.Name = "catBox";
+            this.catBox.Size = new System.Drawing.Size(99, 21);
+            this.catBox.TabIndex = 9;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label4.Location = new System.Drawing.Point(142, 90);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(49, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Category";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // MakeScene
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(305, 167);
+            this.ClientSize = new System.Drawing.Size(334, 156);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.catBox);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.fullPath);
             this.Controls.Add(this.groupBox1);
@@ -174,6 +200,10 @@
         private System.Windows.Forms.TextBox fullPath;
         private System.Windows.Forms.CheckedListBox modeFilters;
         private System.Windows.Forms.Button button1;
-        private RSDKv5.GameConfig.SceneInfo sceneInfo = new RSDKv5.GameConfig.SceneInfo();
+        public RSDKv5.GameConfig.SceneInfo sceneInfo/* = new RSDKv5.GameConfig.SceneInfo()*/;
+        private System.Windows.Forms.ComboBox catBox;
+        private System.Windows.Forms.Label label4;
+        public string cat;
+        //public string[] ctl;
     }
 }

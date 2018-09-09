@@ -146,6 +146,7 @@
             this.stageCategories.Name = "stageCategories";
             this.stageCategories.Size = new System.Drawing.Size(141, 346);
             this.stageCategories.TabIndex = 10;
+            this.stageCategories.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.edScene);
             // 
             // wavBox
             // 
@@ -223,7 +224,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(141, 23);
             this.button2.TabIndex = 12;
-            this.button2.Text = "Import Scene";
+            this.button2.Text = "Add Scene";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.impScn);
             // 

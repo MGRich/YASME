@@ -186,7 +186,12 @@ namespace Test
                         {
                             yna = "";
                         }
+                        if (yna == "3")
+                        {
+                            yna = "Boss";
+                        }
                         yna = zna + " " + yna;
+                        yna = yna.Trim();
                         //Console.WriteLine(yna);
                         //scn.Add(yna, y);
                     }
@@ -618,11 +623,6 @@ namespace Test
                 }
                 string h = wcatAdd.Text;
                 adn = wavTree.Nodes.Add(h);
-                gcct = new RSDKv5.GameConfig.Category
-                {
-                    Name = h
-                };
-                gc.Categories.Add(gcct);
                 if (adn == null)
                 {
                     MessageBox.Show("There was a naming error in your category. Try naming it something else.");
@@ -635,23 +635,24 @@ namespace Test
                 {
                     return;
                 }
-                if (!Directory.Exists(data + "\\Scenes\\" + wcatAdd.Text))
+                /*if (!Directory.Exists(data + "\\Scenes\\" + wcatAdd.Text))
                 {
                     Directory.CreateDirectory(data + "\\SoundFX\\" + wcatAdd.Text);
-                }
+                }*/
                 string h = scatAdd.Text;
                 adn = stageCategories.Nodes.Add(h);
+                gcct = new RSDKv5.GameConfig.Category
+                {
+                    Name = h
+                };
+                gc.Categories.Add(gcct);
+                cts.Add(h, gcct);
                 if (adn == null)
                 {
                     MessageBox.Show("There was a naming error in your category. Try naming it something else.");
                 }
-                impScene(sender, e);
+                impScn(sender, e);
             }
-        }
-
-        private void impScene(object sender, EventArgs e)
-        {
-            //throw new NotImplementedException();
         }
 
         private void impWav(object sender, EventArgs e)
@@ -735,8 +736,78 @@ namespace Test
 
         private void impScn(object sender, EventArgs e)
         {
-            MakeScene scnm = new MakeScene(new RSDKv5.GameConfig.SceneInfo(), data);
-            scnm.Show();
+            MakeScene scnm = new MakeScene(new RSDKv5.GameConfig.SceneInfo(), data, cts.Keys.ToArray(), "Mania Mode");
+            /*(if (sender is TreeNode)
+            {
+                TreeNode nd = sender as TreeNode;
+                scnm = new MakeScene(scn[nd.Text], data, cts.Keys.ToArray(), stn[scn[nd.Text]].Name);
+            }*/
+            scnm.ShowDialog();
+            if (scnm.sceneInfo != null)
+            {
+                cts[scnm.cat].Scenes.Add(scnm.sceneInfo);
+                stn.Add(scnm.sceneInfo, cts[scnm.cat]);
+                TreeNode[] tn = stageCategories.Nodes.Cast<TreeNode>().Where(r => r.Text == scnm.cat).ToArray();
+                string yna = scnm.sceneInfo.Name;
+                if (scnm.cat.Substring(scnm.cat.Length - 4) == "Mode")
+                {
+                    //string yna = y.Name;
+                    string zna = scnm.sceneInfo.Zone;
+                    if (Regex.Match(zna, @"\d{1}$").Success)
+                    {
+                        //yna = zna.Substring(zna.Length - 1);
+                        zna = zna.Substring(0, zna.Length - 1);
+                    }
+                    if (scnm.cat == "Encore Mode")
+                    {
+                        zna = zna + "+";
+                    }
+                    char tst = yna.Substring(yna.Length - 1).ToCharArray(0, 1)[0];
+                    if (Char.IsDigit(tst))
+                    {
+                        yna = tst.ToString();
+                    }
+                    else
+                    {
+                        yna = "";
+                    }
+                    /*if (zna == "ERZ")
+                    {
+                        yna = "";
+                    }*/
+                    yna = zna + " " + yna;
+                    yna = yna.Trim();
+                    //Console.WriteLine(yna);
+                    //scn.Add(yna, y);
+                }
+                tn[0].Nodes.Add(yna);
+                scn.Add(yna, scnm.sceneInfo);
+            }
+        }
+
+        private void edScene(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            TreeNode nd = e.Node;
+            TreeNode prt = nd.Parent;
+            MakeScene scnm = new MakeScene(scn[nd.Text], data, cts.Keys.ToArray(), stn[scn[nd.Text]].Name);
+            //impScn(e.Node, new EventArgs());
+            if (scnm.ShowDialog() == DialogResult.OK)
+            {
+                string nn = nd.Text;
+                if (!nd.Text.Contains("(Edited)"))
+                {
+                    nn = nd.Text + " (Edited)";
+                }
+                stn[scn[nd.Text]].Scenes.Remove(scn[nd.Text]);
+                stn.Remove(scn[nd.Text]);
+                scn.Remove(nd.Text);
+                nd.Remove();
+                cts[scnm.cat].Scenes.Add(scnm.sceneInfo);
+                stn.Add(scnm.sceneInfo, cts[scnm.cat]);
+                scn.Add(nn, scnm.sceneInfo);
+                stageCategories.Nodes.Cast<TreeNode>().Where(r => r.Text == scnm.cat).ToArray()[0].Nodes.Add(nn);
+                nd.Text = nn; //if not already
+            }
         }
     }
 }

@@ -16,24 +16,24 @@ namespace Test
     {
         private string dp = null;
 
-        public MakeScene()
-        {
-            InitializeComponent();
-            refreshPath(this, new EventArgs());
-        }
-
-        public MakeScene(RSDKv5.GameConfig.SceneInfo scn, string dpath)
+        public MakeScene(RSDKv5.GameConfig.SceneInfo info, string dpath, string[] ctl, string ct)
         {
             dp = dpath.Replace("\\", "/");
             InitializeComponent();
-            name.Text = scn.Name;
-            path.Text = scn.Zone;
-            sceneID.Text = scn.SceneID;
+            name.Text = info.Name;
+            path.Text = info.Zone;
+            sceneID.Text = info.SceneID;
 
             //int i = 0;
-            modeFilters.SetItemChecked(0, (scn.ModeFilter & 0b0001) != 0);
-            modeFilters.SetItemChecked(1, (scn.ModeFilter & 0b0010) != 0);
-            modeFilters.SetItemChecked(2, (scn.ModeFilter & 0b0100) != 0);
+            modeFilters.SetItemChecked(0, (info.ModeFilter & 0b0001) != 0);
+            modeFilters.SetItemChecked(1, (info.ModeFilter & 0b0010) != 0);
+            modeFilters.SetItemChecked(2, (info.ModeFilter & 0b0100) != 0);
+
+            foreach (string x in ctl)
+            {
+                catBox.Items.Add(x);
+            }
+            catBox.SelectedItem = ct;
             /*foreach (string x in modeFilters.Items)
             {
                 Console.WriteLine(x);
@@ -42,9 +42,10 @@ namespace Test
 
         private void refreshPath(object sender, EventArgs e)
         {
-            fullPath.Text = "Full Path: Data/Scenes/" + path.Text + "/Scene" + sceneID.Text + ".bin";
-            Console.WriteLine(dp + "/Scenes/" + path.Text + "/Scene" + sceneID.Text + ".bin");
-            if (File.Exists(dp + "/Scenes/" + path.Text + "/Scene" + sceneID.Text + ".bin"))
+            fullPath.Text = "Full Path: Data/Stages/" + path.Text + "/Scene" + sceneID.Text + ".bin";
+            string snf = dp + "/Stages/" + path.Text + "/Scene" + sceneID.Text + ".bin";
+            Console.WriteLine(snf);
+            if (File.Exists(snf))
             {
                 fullPath.ForeColor = Color.Black;
             }
@@ -66,6 +67,7 @@ namespace Test
 
         private void save(object sender, EventArgs e)
         {
+            sceneInfo = new RSDKv5.GameConfig.SceneInfo();
             sceneInfo.Name = name.Text;
             sceneInfo.Zone = path.Text;
             sceneInfo.SceneID = sceneID.Text;
@@ -73,6 +75,9 @@ namespace Test
             sceneInfo.ModeFilter |= (byte)((modeFilters.GetItemChecked(0) ? 1 : 0) << 0);
             sceneInfo.ModeFilter |= (byte)((modeFilters.GetItemChecked(1) ? 1 : 0) << 1);
             sceneInfo.ModeFilter |= (byte)((modeFilters.GetItemChecked(2) ? 1 : 0) << 2);
+            cat = catBox.SelectedItem.ToString();
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }
