@@ -67,11 +67,12 @@ namespace Test
 
         private void save(object sender, EventArgs e)
         {
-            sceneInfo = new RSDKv5.GameConfig.SceneInfo();
-            sceneInfo.Name = name.Text;
-            sceneInfo.Zone = path.Text;
-            sceneInfo.SceneID = sceneID.Text;
-
+            sceneInfo = new RSDKv5.GameConfig.SceneInfo
+            {
+                Name = name.Text,
+                Zone = path.Text,
+                SceneID = sceneID.Text
+            };
             sceneInfo.ModeFilter |= (byte)((modeFilters.GetItemChecked(0) ? 1 : 0) << 0);
             sceneInfo.ModeFilter |= (byte)((modeFilters.GetItemChecked(1) ? 1 : 0) << 1);
             sceneInfo.ModeFilter |= (byte)((modeFilters.GetItemChecked(2) ? 1 : 0) << 2);

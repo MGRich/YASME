@@ -56,13 +56,18 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.sonicPreview = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             this.tabs.SuspendLayout();
             this.gamecTab.SuspendLayout();
             this.wavBox.SuspendLayout();
+            this.gcpBox.SuspendLayout();
             this.sceneBox.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sonicPreview)).BeginInit();
             this.SuspendLayout();
             // 
             // gameName
@@ -124,6 +129,7 @@
             this.tabs.SelectedIndex = 0;
             this.tabs.Size = new System.Drawing.Size(1032, 599);
             this.tabs.TabIndex = 10;
+            this.tabs.Selected += new System.Windows.Forms.TabControlEventHandler(this.changeTab);
             // 
             // gamecTab
             // 
@@ -199,6 +205,7 @@
             // 
             // gcpBox
             // 
+            this.gcpBox.Controls.Add(this.groupBox2);
             this.gcpBox.Location = new System.Drawing.Point(320, 9);
             this.gcpBox.Name = "gcpBox";
             this.gcpBox.Size = new System.Drawing.Size(692, 558);
@@ -323,6 +330,25 @@
             this.statusLabel.Size = new System.Drawing.Size(0, 17);
             this.statusLabel.VisitedLinkColor = System.Drawing.Color.Black;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.sonicPreview);
+            this.groupBox2.Location = new System.Drawing.Point(620, 10);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(66, 255);
+            this.groupBox2.TabIndex = 0;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Preview";
+            // 
+            // sonicPreview
+            // 
+            this.sonicPreview.Image = global::Test.Properties.Resources.Sonic1;
+            this.sonicPreview.Location = new System.Drawing.Point(5, 16);
+            this.sonicPreview.Name = "sonicPreview";
+            this.sonicPreview.Size = new System.Drawing.Size(56, 234);
+            this.sonicPreview.TabIndex = 0;
+            this.sonicPreview.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -345,12 +371,15 @@
             this.gamecTab.ResumeLayout(false);
             this.wavBox.ResumeLayout(false);
             this.wavBox.PerformLayout();
+            this.gcpBox.ResumeLayout(false);
             this.sceneBox.ResumeLayout(false);
             this.sceneBox.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.sonicPreview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -384,6 +413,8 @@
         private System.Windows.Forms.TextBox scatAdd;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.PictureBox sonicPreview;
     }
 }
 

@@ -8,6 +8,9 @@ using System.IO;
 using Cyotek.Windows.Forms;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
+/*using System.Reflection;
+using System.ComponentModel;*/
+
 namespace Test
 {
     public partial class MainForm : Form
@@ -17,6 +20,10 @@ namespace Test
         private string gcf;
 
         private string data;
+
+        private string mode;
+
+        private object[][] tvars = new object[2][];
 
         public MainForm()
         {
@@ -84,6 +91,8 @@ namespace Test
                 gc = new RSDKv5.GameConfig(data + "\\Game\\GameConfig.bin");
                 gcf = data + "\\Game\\GameConfig.bin";
                 openGC(gc);
+                mode = "gc";
+                tabs.SelectedIndex = 0;
                 statusLabel.Text = "Loaded GameConfig.";
                 fl = false;
             }
@@ -101,8 +110,6 @@ namespace Test
         private Dictionary<string, RSDKv5.GameConfig.SceneInfo> scn = new Dictionary<string, RSDKv5.GameConfig.SceneInfo> { };
         private Dictionary<string, RSDKv5.GameConfig.Category> cts = new Dictionary<string, RSDKv5.GameConfig.Category> { };
         private Dictionary<RSDKv5.GameConfig.SceneInfo, RSDKv5.GameConfig.Category> stn = new Dictionary<RSDKv5.GameConfig.SceneInfo, RSDKv5.GameConfig.Category>();
-
-        private int lys = 0;
 
         private List<bool> cks = new List<bool>();
         private int lar = 0;
@@ -228,6 +235,21 @@ namespace Test
             e = 0;
             formNode(ctsl, stageCategories);
             makePalette(formPalette(gc.Palettes), lar, gcpBox);
+            i = 0;
+            System.Drawing.Imaging.ColorPalette pal = sonicPreview.Image.Palette;
+            foreach (Color x in clrs[lar])
+            {
+                pal.Entries[i] = x;
+                Console.WriteLine(pal.Entries[i]);
+                Console.WriteLine(x);
+                if (i == 0)
+                {
+                    pal.Entries[i] = Color.Transparent;
+                }
+                i++;
+            }
+            sonicPreview.Image.Palette = pal;
+            sonicPreview.Refresh();
             /*foreach (string x in wvl)
             {
                 //string nm = x.Name;
@@ -238,7 +260,6 @@ namespace Test
         private Color[][] formPalette(RSDKv5.Palette[] palettes)
         {
             Color[] clrp = new Color[256];
-            lys = 0;
             cks = new List<bool>();
             int i = 0;
             int e = 0;
@@ -307,7 +328,6 @@ namespace Test
                 clrs[u] = clrp;
                 clrp = new Color[256];
                 e = 0;
-                lys++;
                 u++;
             }
             Console.WriteLine(clrs[0] == clrs[1]);
@@ -468,6 +488,7 @@ namespace Test
                 int r = dpd[pic] + 256 * lyr;
                 r = r / 16;
                 pic.BackColor = colors[q];
+                pic.Click -= event_handler;
                 if (cks[r])
                 {
                     pic.Click += event_handler;
@@ -505,6 +526,22 @@ namespace Test
                 clrs[lar][clr] = colorPicker.Color;
                 Console.WriteLine(clrs[lar][clr]);
                 pic.BackColor = colorPicker.Color;
+                System.Drawing.Imaging.ColorPalette pal = sonicPreview.Image.Palette;
+                int i = 0;
+                foreach (Color x in clrs[lar])
+                {
+                    pal.Entries[i] = x;
+                    Console.WriteLine(pal.Entries[i]);
+                    Console.WriteLine(x);
+                    if (i == 0)
+                    {
+                        pal.Entries[i] = Color.Transparent;
+                    }
+                    i++;
+                }
+                sonicPreview.Image.Palette = pal;
+                sonicPreview.Refresh();
+                parsePalette(clrs);
                 //parsePalette(clrs, gc.Palettes);
             }
         }
@@ -736,7 +773,12 @@ namespace Test
 
         private void impScn(object sender, EventArgs e)
         {
+            Button btn = sender as Button;
             MakeScene scnm = new MakeScene(new RSDKv5.GameConfig.SceneInfo(), data, cts.Keys.ToArray(), "Mania Mode");
+            if (btn.Text == "Add Scene Category")
+            {
+                scnm = new MakeScene(new RSDKv5.GameConfig.SceneInfo(), data, cts.Keys.ToArray(), gcct.Name);
+            }
             /*(if (sender is TreeNode)
             {
                 TreeNode nd = sender as TreeNode;
@@ -789,6 +831,10 @@ namespace Test
         {
             TreeNode nd = e.Node;
             TreeNode prt = nd.Parent;
+            if (prt == null)
+            {
+                return;
+            }
             MakeScene scnm = new MakeScene(scn[nd.Text], data, cts.Keys.ToArray(), stn[scn[nd.Text]].Name);
             //impScn(e.Node, new EventArgs());
             if (scnm.ShowDialog() == DialogResult.OK)
@@ -809,5 +855,49 @@ namespace Test
                 nd.Text = nn; //if not already
             }
         }
+
+        private void parsePalette(Color[][] pal)
+        {
+            int i = 0;
+            RSDKv5.Palette[] gpal = gc.Palettes;
+            foreach (Color[] x in pal)
+            {
+                for (int t = 0; t < 16; t++)
+                {
+                        
+                }
+                Color[] y = new Color[16];
+                Array.Copy(x, i, y, 0, 16);
+                int e = 0;
+                foreach (Color z in y)
+                {
+                    Console.WriteLine(z.ToString() + e.ToString() + " " + i.ToString());
+                    e++;
+                }
+                i++;
+            }
+        }
+
+        private void changeTab(object sender, TabControlEventArgs e)
+        {
+            tvars[0] = new object[1] { lar };
+            if (e.TabPageIndex == 0)
+            {
+                object[] vrs = tvars[0];
+                lar = (int)vrs[0];
+                openGC(gc);
+            }
+        }
+
+        /*private void removeClicks(object b) // https://stackoverflow.com/questions/91778/
+        {
+            FieldInfo f1 = typeof(Control).GetField("EventClick",
+                BindingFlags.Static | BindingFlags.NonPublic);
+            object obj = f1.GetValue(b);
+            PropertyInfo pi = b.GetType().GetProperty("Events",
+                BindingFlags.NonPublic | BindingFlags.Instance);
+            EventHandlerList list = (EventHandlerList)pi.GetValue(b, null);
+            list.RemoveHandler(obj, list[obj]);
+        }*/
     }
 }
